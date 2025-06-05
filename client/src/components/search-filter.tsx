@@ -78,6 +78,26 @@ export default function SearchFilter({ onSearch, onFilter, activeFilter }: Searc
             >
               React
             </Button>
+            <Button
+              onClick={() => handleFilterClick('Microfrontends')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                activeFilter === 'Microfrontends'
+                  ? 'bg-[hsl(var(--material-blue))] text-white hover:bg-[hsl(var(--material-blue-dark))]'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Microfrontends
+            </Button>
+            <Button
+              onClick={() => handleFilterClick('UI Trends')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                activeFilter === 'UI Trends'
+                  ? 'bg-[hsl(var(--material-blue))] text-white hover:bg-[hsl(var(--material-blue-dark))]'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              UI Trends
+            </Button>
           </div>
         </div>
       </div>

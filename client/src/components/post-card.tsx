@@ -18,7 +18,11 @@ export default function PostCard({ post }: PostCardProps) {
               className={`px-3 py-1 text-xs font-medium rounded-full ${
                 post.category === 'Angular' 
                   ? 'bg-red-100 text-red-800 hover:bg-red-100' 
-                  : 'bg-blue-100 text-blue-800 hover:bg-blue-100'
+                  : post.category === 'React'
+                  ? 'bg-blue-100 text-blue-800 hover:bg-blue-100'
+                  : post.category === 'Microfrontends'
+                  ? 'bg-purple-100 text-purple-800 hover:bg-purple-100'
+                  : 'bg-green-100 text-green-800 hover:bg-green-100'
               }`}
             >
               {post.category}

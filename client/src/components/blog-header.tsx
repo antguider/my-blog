@@ -54,8 +54,22 @@ export default function BlogHeader() {
             <Button 
               variant="ghost" 
               className="text-gray-700 hover:text-[hsl(var(--material-blue))] transition-colors duration-200"
+              onClick={() => {
+                const event = new CustomEvent('filter-posts', { detail: 'Microfrontends' });
+                window.dispatchEvent(event);
+              }}
             >
-              About
+              Microfrontends
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="text-gray-700 hover:text-[hsl(var(--material-blue))] transition-colors duration-200"
+              onClick={() => {
+                const event = new CustomEvent('filter-posts', { detail: 'UI Trends' });
+                window.dispatchEvent(event);
+              }}
+            >
+              UI Trends
             </Button>
           </nav>
           
@@ -98,7 +112,28 @@ export default function BlogHeader() {
               >
                 React
               </Button>
-              <Button variant="ghost" className="w-full justify-start">About</Button>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => {
+                  const event = new CustomEvent('filter-posts', { detail: 'Microfrontends' });
+                  window.dispatchEvent(event);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Microfrontends
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => {
+                  const event = new CustomEvent('filter-posts', { detail: 'UI Trends' });
+                  window.dispatchEvent(event);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                UI Trends
+              </Button>
             </div>
           </div>
         )}
