@@ -1393,8 +1393,1787 @@ This simple cookie plugin provides all the basic functionality you need for most
   }
 ];
 
+// Additional React posts
+const additionalReactPosts = [
+  {
+    id: 'react-1',
+    title: 'React 18 Concurrent Features: Understanding Suspense and Error Boundaries',
+    excerpt: 'Explore React 18\'s concurrent features including Suspense, Error Boundaries, and how they improve user experience.',
+    content: `
+# React 18 Concurrent Features: Understanding Suspense and Error Boundaries
+
+React 18 introduced powerful concurrent features that revolutionize how we handle asynchronous operations and error states. This guide explores Suspense, Error Boundaries, and their practical applications.
+
+## What are Concurrent Features?
+
+Concurrent features allow React to work on multiple tasks simultaneously, prioritizing user interactions and providing a smoother experience. Key features include:
+
+- **Suspense**: Declarative loading states
+- **Error Boundaries**: Graceful error handling
+- **Concurrent Rendering**: Interruptible rendering
+- **Automatic Batching**: Optimized state updates
+
+## Understanding Suspense
+
+Suspense lets you declaratively specify loading states for components that depend on asynchronous data.
+
+### Basic Suspense Implementation
+
+\`\`\`typescript
+import { Suspense, lazy } from 'react';
+
+const LazyComponent = lazy(() => import('./LazyComponent'));
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyComponent />
+      </Suspense>
+    </div>
+  );
+}
+\`\`\`
+
+### Data Fetching with Suspense
+
+\`\`\`typescript
+// Custom hook for data fetching
+function useUserData(userId: string) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    fetchUserData(userId)
+      .then(setData)
+      .catch(setError);
+  }, [userId]);
+  
+  if (error) throw error;
+  if (!data) throw new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return data;
+}
+
+// Component using Suspense
+function UserProfile({ userId }: { userId: string }) {
+  const userData = useUserData(userId);
+  
+  return (
+    <div>
+      <h1>{userData.name}</h1>
+      <p>{userData.email}</p>
+    </div>
+  );
+}
+
+// Usage with Suspense
+function App() {
+  return (
+    <Suspense fallback={<UserSkeleton />}>
+      <UserProfile userId="123" />
+    </Suspense>
+  );
+}
+\`\`\`
+
+## Error Boundaries in React 18
+
+Error Boundaries catch JavaScript errors anywhere in the component tree and display fallback UI.
+
+### Class Component Error Boundary
+
+\`\`\`typescript
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+    // Send error to monitoring service
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-boundary">
+          <h2>Something went wrong.</h2>
+          <button onClick={() => this.setState({ hasError: false })}>
+            Try again
+          </button>
+        </div>
+      );
+    }
+    
+    return this.props.children;
+  }
+}
+\`\`\`
+
+### Hook-based Error Boundary
+
+\`\`\`typescript
+import { ErrorBoundary } from 'react-error-boundary';
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <div role="alert">
+      <h2>Something went wrong:</h2>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onError={(error, errorInfo) => {
+        console.error('Error:', error, errorInfo);
+      }}
+    >
+      <MyComponent />
+    </ErrorBoundary>
+  );
+}
+\`\`\`
+
+## Concurrent Rendering Patterns
+
+### Streaming SSR with Suspense
+
+\`\`\`typescript
+// Server-side rendering with streaming
+function App() {
+  return (
+    <html>
+      <body>
+        <Suspense fallback={<div>Loading header...</div>}>
+          <Header />
+        </Suspense>
+        <Suspense fallback={<div>Loading content...</div>}>
+          <MainContent />
+        </Suspense>
+        <Suspense fallback={<div>Loading footer...</div>}>
+          <Footer />
+        </Suspense>
+      </body>
+    </html>
+  );
+}
+\`\`\`
+
+### Optimistic Updates
+
+\`\`\`typescript
+function OptimisticUpdate() {
+  const [data, setData] = useState(initialData);
+  const [isPending, setIsPending] = useState(false);
+  
+  const updateData = async (newData) => {
+    setIsPending(true);
+    
+    // Optimistically update UI
+    setData(newData);
+    
+    try {
+      await saveData(newData);
+    } catch (error) {
+      // Revert on error
+      setData(initialData);
+      throw error;
+    } finally {
+      setIsPending(false);
+    }
+  };
+  
+  return (
+    <div>
+      {isPending && <div>Updating...</div>}
+      <DataDisplay data={data} />
+      <button onClick={() => updateData(newData)}>
+        Update
+      </button>
+    </div>
+  );
+}
+\`\`\`
+
+## Best Practices
+
+1. **Use Suspense for loading states**: Declarative loading is cleaner than imperative loading
+2. **Implement Error Boundaries**: Catch and handle errors gracefully
+3. **Optimize bundle splitting**: Use lazy loading with Suspense
+4. **Handle edge cases**: Consider network failures and timeouts
+5. **Monitor performance**: Track loading times and error rates
+
+## Conclusion
+
+React 18's concurrent features provide powerful tools for building resilient, user-friendly applications. By leveraging Suspense and Error Boundaries, you can create applications that handle asynchronous operations and errors gracefully.
+
+Start implementing these patterns in your React applications to improve user experience and application reliability.
+    `,
+    author: 'John Doe',
+    date: '2024-12-15',
+    category: 'React',
+    tags: ['React', 'Suspense', 'Error Boundaries', 'Concurrent Features', 'React 18'],
+    readTime: 12,
+    featured: true,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+  },
+  {
+    id: 'react-2',
+    title: 'React Server Components: The Future of React Development',
+    excerpt: 'Learn about React Server Components, their benefits, and how they differ from traditional client-side components.',
+    content: `
+# React Server Components: The Future of React Development
+
+React Server Components represent a paradigm shift in React development, enabling components to render on the server while maintaining the interactive capabilities of client components.
+
+## What are Server Components?
+
+Server Components are React components that run on the server and can access backend resources directly. They're sent to the client as a special format, reducing the JavaScript bundle size.
+
+### Key Benefits
+
+- **Reduced Bundle Size**: Server components don't increase client bundle
+- **Direct Backend Access**: Can access databases, file systems, and APIs
+- **Better Performance**: Faster initial page loads
+- **SEO Friendly**: Content is rendered on the server
+
+## Server vs Client Components
+
+### Server Component Example
+
+\`\`\`typescript
+// This runs on the server
+async function ServerComponent() {
+  // Can access server-side resources directly
+  const data = await fetch('https://api.example.com/data', {
+    cache: 'no-store'
+  });
+  const posts = await data.json();
+  
+  return (
+    <div>
+      <h1>Server Rendered Content</h1>
+      {posts.map(post => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+\`\`\`
+
+### Client Component Example
+
+\`\`\`typescript
+'use client';
+
+import { useState } from 'react';
+
+// This runs on the client
+function ClientComponent() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <h1>Interactive Client Component</h1>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+\`\`\`
+
+## Hybrid Approach
+
+\`\`\`typescript
+// Server Component
+async function BlogPost({ postId }: { postId: string }) {
+  const post = await getPost(postId);
+  
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      {/* Client component for interactivity */}
+      <LikeButton postId={postId} />
+    </article>
+  );
+}
+
+// Client Component
+'use client';
+function LikeButton({ postId }: { postId: string }) {
+  const [likes, setLikes] = useState(0);
+  
+  const handleLike = async () => {
+    await fetch(\`/api/posts/\${postId}/like\`, {
+      method: 'POST'
+    });
+    setLikes(prev => prev + 1);
+  };
+  
+  return (
+    <button onClick={handleLike}>
+      Like ({likes})
+    </button>
+  );
+}
+\`\`\`
+
+## Data Fetching Patterns
+
+### Server-Side Data Fetching
+
+\`\`\`typescript
+async function UserProfile({ userId }: { userId: string }) {
+  // Direct database access on server
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    include: { posts: true }
+  });
+  
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      <div>
+        <h2>Posts</h2>
+        {user.posts.map(post => (
+          <div key={post.id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+\`\`\`
+
+### Streaming with Suspense
+
+\`\`\`typescript
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading user...</div>}>
+        <UserProfile userId="123" />
+      </Suspense>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <RecentPosts />
+      </Suspense>
+    </div>
+  );
+}
+\`\`\`
+
+## Best Practices
+
+1. **Use Server Components by default**: Only use client components when necessary
+2. **Minimize client-side JavaScript**: Keep interactivity minimal
+3. **Leverage server-side caching**: Use appropriate cache strategies
+4. **Handle errors gracefully**: Implement proper error boundaries
+5. **Optimize data fetching**: Use efficient database queries
+
+## Migration Strategy
+
+### Step 1: Identify Client-Only Features
+
+\`\`\`typescript
+// Before: Everything runs on client
+function BlogPost() {
+  const [post, setPost] = useState(null);
+  
+  useEffect(() => {
+    fetch('/api/posts/123')
+      .then(res => res.json())
+      .then(setPost);
+  }, []);
+  
+  return post ? <div>{post.title}</div> : <div>Loading...</div>;
+}
+
+// After: Server component for data, client for interactivity
+async function BlogPost() {
+  const post = await getPost('123');
+  
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+      <ClientLikeButton postId="123" />
+    </div>
+  );
+}
+\`\`\`
+
+### Step 2: Optimize Bundle Size
+
+\`\`\`typescript
+// Before: Large client bundle
+import { HeavyLibrary } from 'heavy-library';
+
+function Component() {
+  return <HeavyLibrary />;
+}
+
+// After: Server component reduces bundle
+async function ServerComponent() {
+  const HeavyLibrary = await import('heavy-library');
+  return <HeavyLibrary.default />;
+}
+\`\`\`
+
+## Conclusion
+
+React Server Components offer a powerful way to build more efficient React applications by leveraging server-side rendering while maintaining client-side interactivity. This approach reduces bundle sizes, improves performance, and provides better SEO capabilities.
+
+Start experimenting with Server Components in your Next.js applications to experience the benefits firsthand.
+    `,
+    author: 'Jane Smith',
+    date: '2024-12-10',
+    category: 'React',
+    tags: ['React', 'Server Components', 'Next.js', 'SSR', 'Performance'],
+    readTime: 10,
+    featured: false,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+  },
+  {
+    id: 'react-3',
+    title: 'Advanced React Patterns: Compound Components and Render Props',
+    excerpt: 'Master advanced React patterns including compound components, render props, and higher-order components for better code reusability.',
+    content: `
+# Advanced React Patterns: Compound Components and Render Props
+
+Advanced React patterns help create more flexible, reusable, and maintainable components. This guide explores compound components, render props, and other powerful patterns.
+
+## Compound Components Pattern
+
+Compound components allow you to create components that work together while maintaining a clean API.
+
+### Basic Compound Component
+
+\`\`\`typescript
+// Compound component structure
+const Tabs = ({ children, defaultTab }: TabsProps) => {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  
+  return (
+    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+      <div className="tabs">{children}</div>
+    </TabsContext.Provider>
+  );
+};
+
+const TabsList = ({ children }: { children: React.ReactNode }) => (
+  <div className="tabs-list">{children}</div>
+);
+
+const TabsTrigger = ({ value, children }: TabsTriggerProps) => {
+  const { activeTab, setActiveTab } = useContext(TabsContext);
+  
+  return (
+    <button
+      className={\`tab-trigger \${activeTab === value ? 'active' : ''}\`}
+      onClick={() => setActiveTab(value)}
+    >
+      {children}
+    </button>
+  );
+};
+
+const TabsContent = ({ value, children }: TabsContentProps) => {
+  const { activeTab } = useContext(TabsContext);
+  
+  return activeTab === value ? (
+    <div className="tab-content">{children}</div>
+  ) : null;
+};
+
+// Usage
+function App() {
+  return (
+    <Tabs defaultTab="tab1">
+      <TabsList>
+        <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1">Content 1</TabsContent>
+      <TabsContent value="tab2">Content 2</TabsContent>
+    </Tabs>
+  );
+}
+\`\`\`
+
+### Advanced Compound Component
+
+\`\`\`typescript
+// Modal compound component
+const Modal = ({ children, isOpen, onClose }: ModalProps) => {
+  if (!isOpen) return null;
+  
+  return (
+    <ModalContext.Provider value={{ onClose }}>
+      <div className="modal-overlay">
+        <div className="modal-content">
+          {children}
+        </div>
+      </div>
+    </ModalContext.Provider>
+  );
+};
+
+const ModalHeader = ({ children }: { children: React.ReactNode }) => (
+  <div className="modal-header">{children}</div>
+);
+
+const ModalBody = ({ children }: { children: React.ReactNode }) => (
+  <div className="modal-body">{children}</div>
+);
+
+const ModalFooter = ({ children }: { children: React.ReactNode }) => (
+  <div className="modal-footer">{children}</div>
+);
+
+const ModalCloseButton = () => {
+  const { onClose } = useContext(ModalContext);
+  
+  return (
+    <button className="modal-close" onClick={onClose}>
+      ×
+    </button>
+  );
+};
+
+// Usage
+function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  return (
+    <div>
+      <button onClick={() => setIsModalOpen(true)}>
+        Open Modal
+      </button>
+      
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalHeader>
+          <h2>Modal Title</h2>
+          <ModalCloseButton />
+        </ModalHeader>
+        <ModalBody>
+          <p>Modal content goes here</p>
+        </ModalBody>
+        <ModalFooter>
+          <button onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
+        </ModalFooter>
+      </Modal>
+    </div>
+  );
+}
+\`\`\`
+
+## Render Props Pattern
+
+Render props allow you to share code between components using a function as a prop.
+
+### Basic Render Props
+
+\`\`\`typescript
+// Data fetching with render props
+interface DataFetcherProps<T> {
+  url: string;
+  render: (data: { data: T | null; loading: boolean; error: Error | null }) => React.ReactNode;
+}
+
+function DataFetcher<T>({ url, render }: DataFetcherProps<T>) {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(setData)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [url]);
+  
+  return <>{render({ data, loading, error })}</>;
+}
+
+// Usage
+function App() {
+  return (
+    <DataFetcher
+      url="/api/users"
+      render={({ data, loading, error }) => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error: {error.message}</div>;
+        return (
+          <ul>
+            {data?.map(user => (
+              <li key={user.id}>{user.name}</li>
+            ))}
+          </ul>
+        );
+      }}
+    />
+  );
+}
+\`\`\`
+
+### Advanced Render Props
+
+\`\`\`typescript
+// Form validation with render props
+interface FormProps {
+  initialValues: Record<string, any>;
+  validationSchema: any;
+  onSubmit: (values: any) => void;
+  children: (props: FormRenderProps) => React.ReactNode;
+}
+
+interface FormRenderProps {
+  values: Record<string, any>;
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
+  setValue: (name: string, value: any) => void;
+  setTouched: (name: string) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  isValid: boolean;
+}
+
+function Form({ initialValues, validationSchema, onSubmit, children }: FormProps) {
+  const [values, setValues] = useState(initialValues);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  
+  const setValue = (name: string, value: any) => {
+    setValues(prev => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+  
+  const setTouched = (name: string) => {
+    setTouched(prev => ({ ...prev, [name]: true }));
+  };
+  
+  const validate = () => {
+    // Validation logic here
+    return Object.keys(errors).length === 0;
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      onSubmit(values);
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      {children({
+        values,
+        errors,
+        touched,
+        setValue,
+        setTouched,
+        handleSubmit,
+        isValid: validate()
+      })}
+    </form>
+  );
+}
+
+// Usage
+function App() {
+  return (
+    <Form
+      initialValues={{ email: '', password: '' }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => console.log(values)}
+    >
+      {({ values, errors, setValue, setTouched, handleSubmit, isValid }) => (
+        <div>
+          <input
+            type="email"
+            value={values.email}
+            onChange={(e) => setValue('email', e.target.value)}
+            onBlur={() => setTouched('email')}
+          />
+          {errors.email && <span>{errors.email}</span>}
+          
+          <input
+            type="password"
+            value={values.password}
+            onChange={(e) => setValue('password', e.target.value)}
+            onBlur={() => setTouched('password')}
+          />
+          {errors.password && <span>{errors.password}</span>}
+          
+          <button type="submit" disabled={!isValid}>
+            Submit
+          </button>
+        </div>
+      )}
+    </Form>
+  );
+}
+\`\`\`
+
+## Higher-Order Components (HOCs)
+
+HOCs are functions that take a component and return a new component with additional functionality.
+
+### Basic HOC
+
+\`\`\`typescript
+// Loading HOC
+function withLoading<T extends object>(
+  WrappedComponent: React.ComponentType<T>
+) {
+  return function WithLoadingComponent(props: T & { loading?: boolean }) {
+    const { loading, ...rest } = props;
+    
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+    
+    return <WrappedComponent {...(rest as T)} />;
+  };
+}
+
+// Usage
+const UserProfile = ({ user }: { user: User }) => (
+  <div>
+    <h1>{user.name}</h1>
+    <p>{user.email}</p>
+  </div>
+);
+
+const UserProfileWithLoading = withLoading(UserProfile);
+
+function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+  return (
+    <UserProfileWithLoading user={user} loading={loading} />
+  );
+}
+\`\`\`
+
+### Advanced HOC
+
+\`\`\`typescript
+// Error boundary HOC
+function withErrorBoundary<T extends object>(
+  WrappedComponent: React.ComponentType<T>,
+  fallback?: React.ComponentType<{ error: Error; retry: () => void }>
+) {
+  return class WithErrorBoundary extends React.Component<
+    T & { onError?: (error: Error) => void },
+    { hasError: boolean; error: Error | null }
+  > {
+    constructor(props: any) {
+      super(props);
+      this.state = { hasError: false, error: null };
+    }
+    
+    static getDerivedStateFromError(error: Error) {
+      return { hasError: true, error };
+    }
+    
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+      this.props.onError?.(error);
+      console.error('Error caught by HOC:', error, errorInfo);
+    }
+    
+    render() {
+      if (this.state.hasError) {
+        const FallbackComponent = fallback || DefaultErrorFallback;
+        return (
+          <FallbackComponent
+            error={this.state.error!}
+            retry={() => this.setState({ hasError: false, error: null })}
+          />
+        );
+      }
+      
+      return <WrappedComponent {...this.props} />;
+    }
+  };
+}
+
+const DefaultErrorFallback = ({ error, retry }: { error: Error; retry: () => void }) => (
+  <div>
+    <h2>Something went wrong</h2>
+    <p>{error.message}</p>
+    <button onClick={retry}>Try again</button>
+  </div>
+);
+
+// Usage
+const SafeComponent = withErrorBoundary(MyComponent, CustomErrorFallback);
+\`\`\`
+
+## Best Practices
+
+1. **Use compound components for related functionality**: Keep related components together
+2. **Leverage render props for flexible APIs**: Allow consumers to customize rendering
+3. **Use HOCs sparingly**: Prefer hooks for most use cases
+4. **Maintain backward compatibility**: Don't break existing APIs
+5. **Document your patterns**: Make it clear how to use advanced patterns
+
+## Conclusion
+
+Advanced React patterns like compound components, render props, and HOCs provide powerful ways to create flexible and reusable components. While hooks have replaced many HOC use cases, these patterns still have their place in complex component architectures.
+
+Choose the right pattern for your use case and always prioritize code readability and maintainability.
+    `,
+    author: 'Mike Johnson',
+    date: '2024-12-05',
+    category: 'React',
+    tags: ['React', 'Patterns', 'Compound Components', 'Render Props', 'HOCs'],
+    readTime: 15,
+    featured: false,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+  },
+  {
+    id: 'react-4',
+    title: 'React Performance Optimization: Memoization and Code Splitting',
+    excerpt: 'Learn advanced React performance optimization techniques including memoization, code splitting, and bundle optimization.',
+    content: `
+# React Performance Optimization: Memoization and Code Splitting
+
+Performance optimization is crucial for creating fast, responsive React applications. This guide covers memoization techniques, code splitting strategies, and bundle optimization.
+
+## Memoization Techniques
+
+### React.memo
+
+React.memo prevents unnecessary re-renders by memoizing the component.
+
+\`\`\`typescript
+// Basic memoization
+const ExpensiveComponent = React.memo(({ data }: { data: ComplexData[] }) => {
+  const processedData = useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      calculated: expensiveCalculation(item)
+    }));
+  }, [data]);
+  
+  return (
+    <div>
+      {processedData.map(item => (
+        <DataItem key={item.id} data={item} />
+      ))}
+    </div>
+  );
+});
+
+// Custom comparison function
+const UserCard = React.memo(({ user }: { user: User }) => {
+  return (
+    <div>
+      <h3>{user.name}</h3>
+      <p>{user.email}</p>
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  return prevProps.user.id === nextProps.user.id &&
+         prevProps.user.name === nextProps.user.name;
+});
+\`\`\`
+
+### useMemo and useCallback
+
+\`\`\`typescript
+function ProductList({ products, filters }: ProductListProps) {
+  // Memoize expensive calculations
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      return filters.category === 'all' || 
+             product.category === filters.category;
+    });
+  }, [products, filters.category]);
+  
+  // Memoize callbacks to prevent child re-renders
+  const handleProductClick = useCallback((productId: string) => {
+    navigate(\`/products/\${productId}\`);
+  }, [navigate]);
+  
+  const handleAddToCart = useCallback((productId: string) => {
+    addToCart(productId);
+  }, [addToCart]);
+  
+  return (
+    <div>
+      {filteredProducts.map(product => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          onClick={handleProductClick}
+          onAddToCart={handleAddToCart}
+        />
+      ))}
+    </div>
+  );
+}
+\`\`\`
+
+### Advanced Memoization Patterns
+
+\`\`\`typescript
+// Memoized selector pattern
+const useProductSelector = (selector: (state: AppState) => any) => {
+  return useSelector(selector, shallowEqual);
+};
+
+// Custom hook with memoization
+function useExpensiveCalculation(data: ComplexData[]) {
+  return useMemo(() => {
+    return data.reduce((acc, item) => {
+      const processed = processItem(item);
+      return acc.concat(processed);
+    }, []);
+  }, [data]);
+}
+
+// Memoized context value
+const AppContext = createContext<AppContextType | null>(null);
+
+function AppProvider({ children }: { children: React.ReactNode }) {
+  const [state, setState] = useState(initialState);
+  
+  const contextValue = useMemo(() => ({
+    state,
+    setState,
+    // Other methods
+  }), [state]);
+  
+  return (
+    <AppContext.Provider value={contextValue}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+\`\`\`
+
+## Code Splitting Strategies
+
+### Route-based Code Splitting
+
+\`\`\`typescript
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+// Lazy load components
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+
+// Loading component
+const PageLoader = () => (
+  <div className="page-loader">
+    <div className="spinner" />
+    <p>Loading page...</p>
+  </div>
+);
+
+function App() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
+    </Suspense>
+  );
+}
+\`\`\`
+
+### Component-based Code Splitting
+
+\`\`\`typescript
+// Lazy load heavy components
+const ChartComponent = lazy(() => import('./components/ChartComponent'));
+const DataTable = lazy(() => import('./components/DataTable'));
+const RichTextEditor = lazy(() => import('./components/RichTextEditor'));
+
+function Dashboard() {
+  const [activeTab, setActiveTab] = useState('overview');
+  
+  return (
+    <div>
+      <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      <div className="tab-content">
+        {activeTab === 'overview' && (
+          <Suspense fallback={<div>Loading chart...</div>}>
+            <ChartComponent />
+          </Suspense>
+        )}
+        
+        {activeTab === 'data' && (
+          <Suspense fallback={<div>Loading table...</div>}>
+            <DataTable />
+          </Suspense>
+        )}
+        
+        {activeTab === 'editor' && (
+          <Suspense fallback={<div>Loading editor...</div>}>
+            <RichTextEditor />
+          </Suspense>
+        )}
+      </div>
+    </div>
+  );
+}
+\`\`\`
+
+### Dynamic Imports with Error Handling
+
+\`\`\`typescript
+// Advanced lazy loading with error handling
+function createLazyComponent(importFn: () => Promise<any>) {
+  return lazy(() => 
+    importFn().catch(error => {
+      console.error('Failed to load component:', error);
+      return {
+        default: () => (
+          <div className="error-component">
+            <h3>Failed to load component</h3>
+            <button onClick={() => window.location.reload()}>
+              Retry
+            </button>
+          </div>
+        )
+      };
+    })
+  );
+}
+
+// Usage
+const LazyComponent = createLazyComponent(() => 
+  import('./components/HeavyComponent')
+);
+
+// Preloading components
+function preloadComponent(importFn: () => Promise<any>) {
+  const componentPromise = importFn();
+  
+  return {
+    component: lazy(() => componentPromise),
+    preload: () => componentPromise
+  };
+}
+
+const { component: LazyChart, preload: preloadChart } = preloadComponent(
+  () => import('./components/ChartComponent')
+);
+
+// Preload on hover
+function ChartButton() {
+  return (
+    <button
+      onMouseEnter={preloadChart}
+      onClick={() => setShowChart(true)}
+    >
+      Show Chart
+    </button>
+  );
+}
+\`\`\`
+
+## Bundle Optimization
+
+### Webpack Bundle Analysis
+
+\`\`\`javascript
+// webpack.config.js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      reportFilename: 'bundle-report.html'
+    })
+  ],
+  
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\\\/]node_modules[\\\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
+  }
+};
+\`\`\`
+
+### Tree Shaking Optimization
+
+\`\`\`typescript
+// Import only what you need
+import { debounce } from 'lodash/debounce';
+import { format } from 'date-fns/format';
+
+// Instead of
+import _ from 'lodash';
+import * as dateFns from 'date-fns';
+
+// Use dynamic imports for large libraries
+const loadChartLibrary = async () => {
+  const { Chart } = await import('chart.js');
+  return Chart;
+};
+
+// Conditional loading
+function ConditionalComponent({ shouldLoad }: { shouldLoad: boolean }) {
+  const [Component, setComponent] = useState<React.ComponentType | null>(null);
+  
+  useEffect(() => {
+    if (shouldLoad) {
+      import('./HeavyComponent').then(module => {
+        setComponent(() => module.default);
+      });
+    }
+  }, [shouldLoad]);
+  
+  return Component ? <Component /> : null;
+}
+\`\`\`
+
+## Performance Monitoring
+
+### React DevTools Profiler
+
+\`\`\`typescript
+// Performance monitoring component
+function PerformanceMonitor({ children }: { children: React.ReactNode }) {
+  const [metrics, setMetrics] = useState<PerformanceMetrics[]>([]);
+  
+  const onRenderCallback = (
+    id: string,
+    phase: 'mount' | 'update',
+    actualDuration: number,
+    baseDuration: number,
+    startTime: number,
+    commitTime: number
+  ) => {
+    setMetrics(prev => [...prev, {
+      id,
+      phase,
+      actualDuration,
+      baseDuration,
+      startTime,
+      commitTime
+    }]);
+  };
+  
+  return (
+    <Profiler id="App" onRender={onRenderCallback}>
+      {children}
+    </Profiler>
+  );
+}
+
+// Usage
+function App() {
+  return (
+    <PerformanceMonitor>
+      <Router>
+        <Routes>
+          {/* Your routes */}
+        </Routes>
+      </Router>
+    </PerformanceMonitor>
+  );
+}
+\`\`\`
+
+### Custom Performance Hooks
+
+\`\`\`typescript
+// Performance measurement hook
+function usePerformanceMeasure(name: string) {
+  const startTime = useRef<number>();
+  
+  useEffect(() => {
+    startTime.current = performance.now();
+    
+    return () => {
+      if (startTime.current) {
+        const duration = performance.now() - startTime.current;
+        console.log(\`\${name} took \${duration.toFixed(2)}ms\`);
+        
+        // Send to analytics
+        analytics.track('component_performance', {
+          component: name,
+          duration,
+          timestamp: Date.now()
+        });
+      }
+    };
+  }, [name]);
+}
+
+// Usage
+function ExpensiveComponent() {
+  usePerformanceMeasure('ExpensiveComponent');
+  
+  // Component logic
+  return <div>Expensive content</div>;
+}
+\`\`\`
+
+## Best Practices
+
+1. **Measure before optimizing**: Use React DevTools Profiler
+2. **Memoize expensive calculations**: Use useMemo for heavy computations
+3. **Prevent unnecessary re-renders**: Use React.memo and useCallback
+4. **Split code at route boundaries**: Lazy load pages
+5. **Monitor bundle size**: Use webpack-bundle-analyzer
+6. **Preload critical components**: Load components before they're needed
+7. **Use production builds**: Ensure optimizations are enabled
+
+## Conclusion
+
+React performance optimization requires a combination of memoization techniques, code splitting strategies, and bundle optimization. By implementing these patterns, you can create faster, more responsive applications that provide better user experiences.
+
+Remember to measure performance before and after optimizations to ensure your changes are effective.
+    `,
+    author: 'Sarah Wilson',
+    date: '2024-11-30',
+    category: 'React',
+    tags: ['React', 'Performance', 'Memoization', 'Code Splitting', 'Optimization'],
+    readTime: 18,
+    featured: true,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+  },
+  {
+    id: 'react-5',
+    title: 'React Testing: Unit Tests, Integration Tests, and E2E Testing',
+    excerpt: 'Comprehensive guide to testing React applications including unit tests, integration tests, and end-to-end testing strategies.',
+    content: `
+# React Testing: Unit Tests, Integration Tests, and E2E Testing
+
+Testing is essential for building reliable React applications. This guide covers unit testing, integration testing, and end-to-end testing strategies.
+
+## Unit Testing with Jest and React Testing Library
+
+### Setting Up Testing Environment
+
+\`\`\`bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest
+\`\`\`
+
+\`\`\`javascript
+// jest.setup.js
+import '@testing-library/jest-dom';
+
+// setupTests.ts
+import '@testing-library/jest-dom';
+\`\`\`
+
+### Basic Component Testing
+
+\`\`\`typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Button from './Button';
+
+describe('Button Component', () => {
+  it('renders with correct text', () => {
+    render(<Button>Click me</Button>);
+    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+  });
+  
+  it('calls onClick handler when clicked', async () => {
+    const handleClick = jest.fn();
+    const user = userEvent.setup();
+    
+    render(<Button onClick={handleClick}>Click me</Button>);
+    
+    await user.click(screen.getByRole('button'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+  
+  it('is disabled when disabled prop is true', () => {
+    render(<Button disabled>Click me</Button>);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+});
+\`\`\`
+
+### Testing Custom Hooks
+
+\`\`\`typescript
+import { renderHook, act } from '@testing-library/react';
+import { useCounter } from './useCounter';
+
+describe('useCounter Hook', () => {
+  it('should initialize with default value', () => {
+    const { result } = renderHook(() => useCounter());
+    expect(result.current.count).toBe(0);
+  });
+  
+  it('should increment count', () => {
+    const { result } = renderHook(() => useCounter());
+    
+    act(() => {
+      result.current.increment();
+    });
+    
+    expect(result.current.count).toBe(1);
+  });
+  
+  it('should decrement count', () => {
+    const { result } = renderHook(() => useCounter(5));
+    
+    act(() => {
+      result.current.decrement();
+    });
+    
+    expect(result.current.count).toBe(4);
+  });
+  
+  it('should reset count', () => {
+    const { result } = renderHook(() => useCounter(10));
+    
+    act(() => {
+      result.current.increment();
+      result.current.reset();
+    });
+    
+    expect(result.current.count).toBe(0);
+  });
+});
+\`\`\`
+
+### Testing Forms and User Interactions
+
+\`\`\`typescript
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import LoginForm from './LoginForm';
+
+describe('LoginForm', () => {
+  it('submits form with valid data', async () => {
+    const onSubmit = jest.fn();
+    const user = userEvent.setup();
+    
+    render(<LoginForm onSubmit={onSubmit} />);
+    
+    await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.click(screen.getByRole('button', { name: /login/i }));
+    
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123'
+      });
+    });
+  });
+  
+  it('shows validation errors for invalid input', async () => {
+    const user = userEvent.setup();
+    
+    render(<LoginForm onSubmit={jest.fn()} />);
+    
+    await user.click(screen.getByRole('button', { name: /login/i }));
+    
+    expect(screen.getByText(/email is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/password is required/i)).toBeInTheDocument();
+  });
+  
+  it('disables submit button while submitting', async () => {
+    const onSubmit = jest.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
+    const user = userEvent.setup();
+    
+    render(<LoginForm onSubmit={onSubmit} />);
+    
+    await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.click(screen.getByRole('button', { name: /login/i }));
+    
+    expect(screen.getByRole('button', { name: /login/i })).toBeDisabled();
+  });
+});
+\`\`\`
+
+## Integration Testing
+
+### Testing Component Interactions
+
+\`\`\`typescript
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import TodoApp from './TodoApp';
+
+describe('TodoApp Integration', () => {
+  it('adds and removes todos', async () => {
+    const user = userEvent.setup();
+    
+    render(<TodoApp />);
+    
+    // Add a todo
+    await user.type(screen.getByPlaceholderText(/add todo/i), 'Learn React');
+    await user.click(screen.getByRole('button', { name: /add/i }));
+    
+    expect(screen.getByText('Learn React')).toBeInTheDocument();
+    
+    // Mark as complete
+    await user.click(screen.getByRole('checkbox'));
+    expect(screen.getByText('Learn React')).toHaveClass('completed');
+    
+    // Remove todo
+    await user.click(screen.getByRole('button', { name: /delete/i }));
+    expect(screen.queryByText('Learn React')).not.toBeInTheDocument();
+  });
+  
+  it('filters todos correctly', async () => {
+    const user = userEvent.setup();
+    
+    render(<TodoApp />);
+    
+    // Add multiple todos
+    await user.type(screen.getByPlaceholderText(/add todo/i), 'Todo 1');
+    await user.click(screen.getByRole('button', { name: /add/i }));
+    
+    await user.type(screen.getByPlaceholderText(/add todo/i), 'Todo 2');
+    await user.click(screen.getByRole('button', { name: /add/i }));
+    
+    // Complete one todo
+    await user.click(screen.getAllByRole('checkbox')[0]);
+    
+    // Filter by active
+    await user.click(screen.getByRole('button', { name: /active/i }));
+    expect(screen.getByText('Todo 2')).toBeInTheDocument();
+    expect(screen.queryByText('Todo 1')).not.toBeInTheDocument();
+    
+    // Filter by completed
+    await user.click(screen.getByRole('button', { name: /completed/i }));
+    expect(screen.getByText('Todo 1')).toBeInTheDocument();
+    expect(screen.queryByText('Todo 2')).not.toBeInTheDocument();
+  });
+});
+\`\`\`
+
+### Testing API Integration
+
+\`\`\`typescript
+import { render, screen, waitFor } from '@testing-library/react';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import UserList from './UserList';
+
+// Mock API server
+const server = setupServer(
+  rest.get('/api/users', (req, res, ctx) => {
+    return res(
+      ctx.json([
+        { id: 1, name: 'John Doe', email: 'john@example.com' },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+      ])
+    );
+  }),
+  
+  rest.post('/api/users', (req, res, ctx) => {
+    return res(
+      ctx.json({ id: 3, name: 'New User', email: 'new@example.com' })
+    );
+  })
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+describe('UserList API Integration', () => {
+  it('loads and displays users', async () => {
+    render(<UserList />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+  });
+  
+  it('handles API errors gracefully', async () => {
+    server.use(
+      rest.get('/api/users', (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
+    
+    render(<UserList />);
+    
+    await waitFor(() => {
+      expect(screen.getByText(/error loading users/i)).toBeInTheDocument();
+    });
+  });
+  
+  it('creates new user', async () => {
+    const user = userEvent.setup();
+    
+    render(<UserList />);
+    
+    await user.type(screen.getByLabelText(/name/i), 'New User');
+    await user.type(screen.getByLabelText(/email/i), 'new@example.com');
+    await user.click(screen.getByRole('button', { name: /add user/i }));
+    
+    await waitFor(() => {
+      expect(screen.getByText('New User')).toBeInTheDocument();
+    });
+  });
+});
+\`\`\`
+
+## End-to-End Testing with Playwright
+
+### Setting Up Playwright
+
+\`\`\`bash
+npm install --save-dev @playwright/test
+npx playwright install
+\`\`\`
+
+\`\`\`javascript
+// playwright.config.js
+module.exports = {
+  testDir: './e2e',
+  timeout: 30000,
+  retries: 2,
+  use: {
+    baseURL: 'http://localhost:3000',
+    headless: true,
+    viewport: { width: 1280, height: 720 },
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure'
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } }
+  ]
+};
+\`\`\`
+
+### Basic E2E Tests
+
+\`\`\`typescript
+// e2e/todo-app.spec.ts
+import { test, expect } from '@playwright/test';
+
+test.describe('Todo App', () => {
+  test('should add and complete todos', async ({ page }) => {
+    await page.goto('/');
+    
+    // Add a todo
+    await page.fill('[placeholder="Add a new todo"]', 'Learn Playwright');
+    await page.click('button:has-text("Add")');
+    
+    // Verify todo is added
+    await expect(page.locator('text=Learn Playwright')).toBeVisible();
+    
+    // Mark as complete
+    await page.check('input[type="checkbox"]');
+    await expect(page.locator('text=Learn Playwright')).toHaveClass(/completed/);
+    
+    // Delete todo
+    await page.click('button:has-text("Delete")');
+    await expect(page.locator('text=Learn Playwright')).not.toBeVisible();
+  });
+  
+  test('should filter todos', async ({ page }) => {
+    await page.goto('/');
+    
+    // Add multiple todos
+    await page.fill('[placeholder="Add a new todo"]', 'Todo 1');
+    await page.click('button:has-text("Add")');
+    
+    await page.fill('[placeholder="Add a new todo"]', 'Todo 2');
+    await page.click('button:has-text("Add")');
+    
+    // Complete first todo
+    await page.check('input[type="checkbox"]:first-of-type');
+    
+    // Filter by active
+    await page.click('button:has-text("Active")');
+    await expect(page.locator('text=Todo 2')).toBeVisible();
+    await expect(page.locator('text=Todo 1')).not.toBeVisible();
+    
+    // Filter by completed
+    await page.click('button:has-text("Completed")');
+    await expect(page.locator('text=Todo 1')).toBeVisible();
+    await expect(page.locator('text=Todo 2')).not.toBeVisible();
+  });
+});
+\`\`\`
+
+### Advanced E2E Testing
+
+\`\`\`typescript
+// e2e/user-authentication.spec.ts
+import { test, expect } from '@playwright/test';
+
+test.describe('User Authentication', () => {
+  test('should login successfully', async ({ page }) => {
+    await page.goto('/login');
+    
+    await page.fill('[name="email"]', 'test@example.com');
+    await page.fill('[name="password"]', 'password123');
+    await page.click('button:has-text("Login")');
+    
+    await expect(page).toHaveURL('/dashboard');
+    await expect(page.locator('text=Welcome')).toBeVisible();
+  });
+  
+  test('should show error for invalid credentials', async ({ page }) => {
+    await page.goto('/login');
+    
+    await page.fill('[name="email"]', 'invalid@example.com');
+    await page.fill('[name="password"]', 'wrongpassword');
+    await page.click('button:has-text("Login")');
+    
+    await expect(page.locator('text=Invalid credentials')).toBeVisible();
+  });
+  
+  test('should logout successfully', async ({ page }) => {
+    // Login first
+    await page.goto('/login');
+    await page.fill('[name="email"]', 'test@example.com');
+    await page.fill('[name="password"]', 'password123');
+    await page.click('button:has-text("Login")');
+    
+    // Logout
+    await page.click('button:has-text("Logout")');
+    await expect(page).toHaveURL('/login');
+  });
+});
+\`\`\`
+
+## Testing Best Practices
+
+### Test Organization
+
+\`\`\`typescript
+// Test utilities
+export const renderWithProviders = (
+  ui: React.ReactElement,
+  options?: RenderOptions
+) => {
+  const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <Provider store={store}>
+        <Router>
+          {children}
+        </Router>
+      </Provider>
+    );
+  };
+  
+  return render(ui, { wrapper: AllTheProviders, ...options });
+};
+
+// Custom matchers
+expect.extend({
+  toBeInTheDocument(received) {
+    const pass = received !== null;
+    return {
+      pass,
+      message: () => \`expected \${received} to be in the document\`
+    };
+  }
+});
+\`\`\`
+
+### Mocking Strategies
+
+\`\`\`typescript
+// Mock external dependencies
+jest.mock('axios', () => ({
+  get: jest.fn(),
+  post: jest.fn(),
+  put: jest.fn(),
+  delete: jest.fn()
+}));
+
+// Mock React Router
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+  useLocation: () => ({ pathname: '/test' })
+}));
+
+// Mock environment variables
+process.env.REACT_APP_API_URL = 'http://localhost:3001';
+\`\`\`
+
+## Conclusion
+
+Testing React applications requires a comprehensive approach covering unit tests, integration tests, and end-to-end tests. By implementing these testing strategies, you can build more reliable and maintainable applications.
+
+Key takeaways:
+- Use React Testing Library for component testing
+- Test user interactions and form submissions
+- Mock external dependencies appropriately
+- Implement E2E tests for critical user flows
+- Maintain good test organization and naming conventions
+
+Start with unit tests and gradually add integration and E2E tests as your application grows.
+    `,
+    author: 'David Brown',
+    date: '2024-11-25',
+    category: 'React',
+    tags: ['React', 'Testing', 'Jest', 'React Testing Library', 'Playwright'],
+    readTime: 20,
+    featured: false,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+  }
+];
+
 export const blogPosts: BlogPost[] = [
   ...extractedPosts,
+  ...additionalReactPosts,
   {
     id: '1',
     title: 'Building Modern React Applications with TypeScript',

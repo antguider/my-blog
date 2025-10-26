@@ -14,6 +14,8 @@ import {
   Grid,
   IconButton,
   useTheme,
+  CircularProgress,
+  Alert,
 } from '@mui/material';
 import {
   ArrowBack,
@@ -24,7 +26,8 @@ import {
   LinkedIn,
 } from '@mui/icons-material';
 import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
-import { blogPosts, authors } from '../data/blogData';
+import { useBlogPost, useAuthors } from '../hooks/useBlog';
+import { BlogPost } from '../types/blog';
 import ReactMarkdown from 'react-markdown';
 
 const BlogPostPage: React.FC = () => {
@@ -32,12 +35,57 @@ const BlogPostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  const post = blogPosts.find(p => p.id === id);
-  const author = authors.find(a => a.name === post?.author);
-  const relatedPosts = blogPosts
-    .filter(p => p.id !== id && p.category === post?.category)
-    .slice(0, 3);
+  // Use the new hooks
+  const { data: postData, loading, error } = useBlogPost(id || '');
+  const { data: authors } = useAuthors();
 
+  // Extract post and related posts from the response
+  const post = postData ? {
+    ...postData,
+    relatedPosts: undefined // Remove relatedPosts from main post object
+  } : null;
+  const relatedPosts = postData?.relatedPosts || [];
+  const author = authors?.find(a => a.name === post?.author);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 8, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress size={60} />
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Loading article...
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Alert severity="error" sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Error Loading Article
+          </Typography>
+          <Typography variant="body2">
+            {error.message}
+          </Typography>
+        </Alert>
+        <Button
+          component={RouterLink}
+          to="/blog"
+          variant="contained"
+          startIcon={<ArrowBack />}
+        >
+          Back to Blog
+        </Button>
+      </Container>
+    );
+  }
+
+  // Show not found state
   if (!post) {
     return (
       <Container maxWidth="lg" sx={{ py: 8, textAlign: 'center' }}>
@@ -302,7 +350,7 @@ const BlogPostPage: React.FC = () => {
             Related Articles
           </Typography>
           <Grid container spacing={3}>
-            {relatedPosts.map((relatedPost) => (
+            {relatedPosts.map((relatedPost: BlogPost) => (
               <Grid size={{ xs: 12, md: 4 }} key={relatedPost.id}>
                 <Card
                   sx={{

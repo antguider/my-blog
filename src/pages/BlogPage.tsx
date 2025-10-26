@@ -21,10 +21,13 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  CircularProgress,
+  Alert,
 } from '@mui/material';
 import { Search, AccessTime, ArrowForward, ExpandMore } from '@mui/icons-material';
 import { Link, useSearchParams } from 'react-router-dom';
-import { blogPosts, categories } from '../data/blogData';
+import { useBlogPosts, useCategories } from '../hooks/useBlog';
+import { BlogFilters, PaginationOptions } from '../types/blog';
 
 const BlogPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,51 +44,81 @@ const BlogPage: React.FC = () => {
     }
   }, [searchParams]);
 
-  // Group posts by tech stack
-  const groupedPosts = useMemo(() => {
-    const groups: { [key: string]: typeof blogPosts } = {
-      'React': [],
-      'Angular': [],
-      'TypeScript': [],
-      'jQuery': [],
-      'Others': []
-    };
+  // Prepare filters and pagination for the hook
+  const filters: BlogFilters = useMemo(() => ({
+    category: selectedCategory || undefined,
+    search: searchTerm || undefined,
+  }), [selectedCategory, searchTerm]);
 
-    blogPosts.forEach(post => {
-      if (groups[post.category]) {
-        groups[post.category].push(post);
-      } else {
-        groups['Others'].push(post); // Default group for any uncategorized posts
-      }
-    });
+  const paginationOptions: PaginationOptions = useMemo(() => ({
+    page: currentPage,
+    limit: postsPerPage,
+    sortBy: 'date',
+    sortOrder: 'desc',
+  }), [currentPage, postsPerPage]);
 
-    return groups;
-  }, []);
+  // Use the new hooks
+  const { data: postsResponse, loading: postsLoading, error: postsError, pagination } = useBlogPosts(filters, paginationOptions);
+  const { data: categories, loading: categoriesLoading, error: categoriesError } = useCategories();
 
-  const filteredPosts = useMemo(() => {
-    if (selectedCategory) {
-      return blogPosts.filter(post => 
-        post.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-    return blogPosts.filter(post => {
-      const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      return matchesSearch;
-    });
-  }, [searchTerm, selectedCategory]);
-
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
+  // Extract data from response
+  const posts = postsResponse || [];
+  const totalPages = pagination?.totalPages || 0;
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Group posts by category for the accordion view
+  const groupedPosts = useMemo(() => {
+    if (!posts.length) return {};
+    
+    const groups: { [key: string]: typeof posts } = {};
+    posts.forEach(post => {
+      if (!groups[post.category]) {
+        groups[post.category] = [];
+      }
+      groups[post.category].push(post);
+    });
+    return groups;
+  }, [posts]);
+
+  // Show loading state
+  if (postsLoading || categoriesLoading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress size={60} />
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Loading articles...
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
+  // Show error state
+  if (postsError || categoriesError) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Alert severity="error" sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Error Loading Content
+          </Typography>
+          <Typography variant="body2">
+            {postsError?.message || categoriesError?.message || 'An unexpected error occurred'}
+          </Typography>
+        </Alert>
+        <Button 
+          variant="contained" 
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </Button>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -142,7 +175,7 @@ const BlogPage: React.FC = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <Typography variant="body2" color="text.secondary">
-              {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''} found
+              {pagination?.total || posts.length} article{(pagination?.total || posts.length) !== 1 ? 's' : ''} found
             </Typography>
           </Grid>
         </Grid>
@@ -152,10 +185,10 @@ const BlogPage: React.FC = () => {
       {selectedCategory ? (
         // Show filtered posts when category is selected
         <>
-          {paginatedPosts.length > 0 ? (
+          {posts.length > 0 ? (
         <>
           <Grid container spacing={4}>
-            {paginatedPosts.map((post) => (
+            {posts.map((post) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={post.id}>
                 <Card
                   sx={{
