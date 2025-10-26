@@ -9,12 +9,10 @@ import {
   TextField,
   Button,
   Alert,
-  useTheme,
 } from '@mui/material';
 import { Email, Phone, LocationOn, Send } from '@mui/icons-material';
 
 const ContactPage: React.FC = () => {
-  const theme = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -123,7 +121,7 @@ const ContactPage: React.FC = () => {
                       variant="outlined"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       label="Subject"
@@ -134,7 +132,7 @@ const ContactPage: React.FC = () => {
                       variant="outlined"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       label="Message"
@@ -148,7 +146,7 @@ const ContactPage: React.FC = () => {
                       placeholder="Tell us what's on your mind..."
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Button
                       type="submit"
                       variant="contained"

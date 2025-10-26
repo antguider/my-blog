@@ -19,7 +19,6 @@ import {
   ArrowBack,
   AccessTime,
   CalendarToday,
-  Share,
   Facebook,
   Twitter,
   LinkedIn,

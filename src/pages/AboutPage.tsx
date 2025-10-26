@@ -10,7 +10,7 @@ import {
   Chip,
   useTheme,
 } from '@mui/material';
-import { Code, Design, Rocket, School } from '@mui/icons-material';
+import { Code, Palette, Rocket, School } from '@mui/icons-material';
 import { authors } from '../data/sampleData';
 
 const AboutPage: React.FC = () => {
@@ -32,7 +32,7 @@ const AboutPage: React.FC = () => {
       description: 'Writing maintainable and scalable code that follows best practices and industry standards.',
     },
     {
-      icon: <Design />,
+      icon: <Palette />,
       title: 'User Experience',
       description: 'Creating intuitive and beautiful interfaces that provide exceptional user experiences.',
     },
@@ -139,11 +139,11 @@ const AboutPage: React.FC = () => {
         </Typography>
         <Grid container spacing={2} justifyContent="center">
           {skills.map((skill) => (
-            <Grid item key={skill.name}>
+            <Grid size="auto" key={skill.name}>
               <Chip
                 label={skill.name}
                 variant="outlined"
-                size="large"
+                size="medium"
                 sx={{
                   fontSize: '1rem',
                   padding: '8px 16px',

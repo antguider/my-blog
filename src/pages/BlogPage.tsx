@@ -18,14 +18,12 @@ import {
   Select,
   MenuItem,
   Pagination,
-  useTheme,
 } from '@mui/material';
 import { Search, AccessTime, ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { samplePosts, categories } from '../data/sampleData';
 
 const BlogPage: React.FC = () => {
-  const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);

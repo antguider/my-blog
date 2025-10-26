@@ -13,7 +13,7 @@ import {
   Avatar,
   useTheme,
 } from '@mui/material';
-import { ArrowForward, AccessTime, Person } from '@mui/icons-material';
+import { ArrowForward, AccessTime } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { samplePosts } from '../data/sampleData';
 
