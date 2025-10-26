@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -18,24 +18,61 @@ import {
   Select,
   MenuItem,
   Pagination,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
-import { Search, AccessTime, ArrowForward } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Search, AccessTime, ArrowForward, ExpandMore } from '@mui/icons-material';
+import { Link, useSearchParams } from 'react-router-dom';
 import { blogPosts, categories } from '../data/blogData';
 
 const BlogPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams] = useSearchParams();
   const postsPerPage = 6;
 
+  // Handle URL parameters
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [searchParams]);
+
+  // Group posts by tech stack
+  const groupedPosts = useMemo(() => {
+    const groups: { [key: string]: typeof blogPosts } = {
+      'React': [],
+      'Angular': [],
+      'TypeScript': [],
+      'jQuery': [],
+      'Others': []
+    };
+
+    blogPosts.forEach(post => {
+      if (groups[post.category]) {
+        groups[post.category].push(post);
+      } else {
+        groups['Others'].push(post); // Default group for any uncategorized posts
+      }
+    });
+
+    return groups;
+  }, []);
+
   const filteredPosts = useMemo(() => {
+    if (selectedCategory) {
+      return blogPosts.filter(post => 
+        post.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
     return blogPosts.filter(post => {
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesCategory = !selectedCategory || post.category.toLowerCase() === selectedCategory.toLowerCase();
-      return matchesSearch && matchesCategory;
+      return matchesSearch;
     });
   }, [searchTerm, selectedCategory]);
 
@@ -111,8 +148,11 @@ const BlogPage: React.FC = () => {
         </Grid>
       </Box>
 
-      {/* Posts Grid */}
-      {paginatedPosts.length > 0 ? (
+      {/* Posts Display */}
+      {selectedCategory ? (
+        // Show filtered posts when category is selected
+        <>
+          {paginatedPosts.length > 0 ? (
         <>
           <Grid container spacing={4}>
             {paginatedPosts.map((post) => (
@@ -254,6 +294,134 @@ const BlogPage: React.FC = () => {
           >
             Clear Filters
           </Button>
+        </Box>
+      )}
+        </>
+      ) : (
+        // Show grouped posts when no category is selected
+        <Box>
+          {Object.entries(groupedPosts).map(([groupName, posts]) => (
+            posts.length > 0 && (
+              <Accordion key={groupName} defaultExpanded sx={{ mb: 2 }}>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                    {groupName} ({posts.length})
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container spacing={3}>
+                    {posts.map((post) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4 }} key={post.id}>
+                        <Card
+                          sx={{
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': {
+                              transform: 'translateY(-4px)',
+                            },
+                          }}
+                        >
+                          <CardMedia
+                            component="img"
+                            height="200"
+                            image={post.imageUrl}
+                            alt={post.title}
+                            sx={{ objectFit: 'cover' }}
+                          />
+                          <CardContent sx={{ flexGrow: 1 }}>
+                            <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+                              <Chip
+                                label={post.category}
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                              />
+                              <Chip
+                                label={`${post.readTime} min read`}
+                                size="small"
+                                icon={<AccessTime />}
+                                variant="outlined"
+                              />
+                              {post.featured && (
+                                <Chip
+                                  label="Featured"
+                                  size="small"
+                                  color="secondary"
+                                  variant="filled"
+                                />
+                              )}
+                            </Box>
+                            <Typography
+                              variant="h6"
+                              component="h3"
+                              gutterBottom
+                              sx={{
+                                fontWeight: 'bold',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              {post.title}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              paragraph
+                              sx={{
+                                display: '-webkit-box',
+                                WebkitLineClamp: 3,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              {post.excerpt}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+                              <Avatar
+                                sx={{ width: 24, height: 24 }}
+                                src={`https://ui-avatars.com/api/?name=${post.author}&background=1976d2&color=fff`}
+                              />
+                              <Typography variant="body2" color="text.secondary">
+                                {post.author}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                • {new Date(post.date).toLocaleDateString()}
+                              </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: 0.5, mt: 1, flexWrap: 'wrap' }}>
+                              {post.tags.slice(0, 3).map((tag) => (
+                                <Chip
+                                  key={tag}
+                                  label={tag}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{ fontSize: '0.7rem', height: 20 }}
+                                />
+                              ))}
+                            </Box>
+                          </CardContent>
+                          <CardActions>
+                            <Button
+                              component={Link}
+                              to={`/blog/${post.id}`}
+                              size="small"
+                              endIcon={<ArrowForward />}
+                            >
+                              Read More
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+            )
+          ))}
         </Box>
       )}
     </Container>

@@ -33,7 +33,7 @@ npm ls --depth=0
 npx webpack-bundle-analyzer dist/main.js
 
 # Identify shared code patterns
-find src -name "*.ts" -exec grep -l "shared\|common\|util" {} \\;
+find src -name "*.ts" -exec grep -l "shared\\|common\\|util" {} \\;
 \`\`\`
 
 ## Migration Strategy
@@ -527,7 +527,7 @@ The key is to start simple and gradually introduce complexity as your teams and 
     `,
     author: 'Muthukumar Jayamurugan',
     date: '2024-11-15',
-    category: 'Micro Frontends',
+    category: 'Others',
     tags: ['Micro Frontends', 'Architecture', 'React', 'Angular', 'Enterprise'],
     readTime: 18,
     featured: true,
@@ -977,7 +977,7 @@ Choose JqxGrid if you need:
     `,
     author: 'jQuery Rock',
     date: '2014-06-15',
-    category: 'JqGrid',
+    category: 'Others',
     tags: ['jQuery', 'JqGrid', 'JqxGrid', 'Comparison', 'Grid'],
     readTime: 8,
     featured: true,
@@ -1082,7 +1082,7 @@ Continue exploring to unlock the full potential of JqGrid!
     `,
     author: 'jQuery Rock',
     date: '2014-09-15',
-    category: 'JqGrid',
+    category: 'Others',
     tags: ['jQuery', 'JqGrid', 'Tutorial', 'Beginner', 'JavaScript'],
     readTime: 12,
     featured: true,
@@ -2118,33 +2118,15 @@ export const categories: Category[] = [
   },
   {
     id: '4',
-    name: 'Micro Frontends',
-    slug: 'micro-frontends',
-    description: 'Micro frontend architecture and implementation'
-  },
-  {
-    id: '5',
     name: 'jQuery',
     slug: 'jquery',
     description: 'jQuery tutorials and examples'
   },
   {
-    id: '6',
-    name: 'JqGrid',
-    slug: 'jqgrid',
-    description: 'JqGrid tutorials and comparisons'
-  },
-  {
-    id: '7',
-    name: 'AWS',
-    slug: 'aws',
-    description: 'AWS cloud services and deployment'
-  },
-  {
-    id: '8',
-    name: 'Testing',
-    slug: 'testing',
-    description: 'Jest, Playwright, and testing strategies'
+    id: '5',
+    name: 'Others',
+    slug: 'others',
+    description: 'Micro Frontends, AWS, Testing, and other technologies'
   }
 ];
 
@@ -2152,7 +2134,7 @@ export const authors: Author[] = [
   {
     id: '1',
     name: 'Muthukumar Jayamurugan',
-    bio: 'UI Lead with 12 years of extensive experience in leading the development and implementation of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.',
+    bio: 'Senior Frontend Developer with extensive experience in React, Angular, and enterprise architecture. Passionate about sharing knowledge and best practices.',
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     socialLinks: {
       twitter: 'https://twitter.com/devmuthu',

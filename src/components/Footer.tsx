@@ -32,11 +32,11 @@ const Footer: React.FC = () => {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              Muthukumar Jayamurugan
+              TechBlog
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              UI Lead with 12 years of extensive experience in leading the development and implementation 
-              of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.
+              A professional blog covering React, Angular, TypeScript, Micro Frontends, and modern web development. 
+              Sharing insights, tutorials, and best practices for enterprise applications.
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <IconButton
@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © {currentYear} Muthukumar Jayamurugan. All rights reserved.
+            © {currentYear} TechBlog. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 3 }}>
             <Link href="/privacy" color="text.secondary" underline="hover" variant="body2">

@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
                   mb: 3,
                 }}
               >
-                Muthukumar Jayamurugan
+                Welcome to TechBlog
               </Typography>
               <Typography
                 variant="h5"
@@ -56,8 +56,8 @@ const HomePage: React.FC = () => {
                   lineHeight: 1.6,
                 }}
               >
-                UI Lead with 12 years of extensive experience in leading the development and implementation 
-                of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.
+                Discover the latest insights in React, Angular, TypeScript, and modern web development. 
+                From enterprise architecture to performance optimization, explore comprehensive guides and best practices.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
                     },
                   }}
                 >
-                  View My Work
+                  Explore Articles
                 </Button>
                 <Button
                   component={Link}
@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
                     },
                   }}
                 >
-                  Contact Me
+                  Learn More
                 </Button>
               </Box>
             </Grid>
@@ -129,10 +129,10 @@ const HomePage: React.FC = () => {
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Box sx={{ textAlign: 'center', mb: 6 }}>
           <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Featured Articles
+            Explore by Tech Stack
           </Typography>
           <Typography variant="h6" color="text.secondary" paragraph>
-            Handpicked articles showcasing the latest trends and best practices
+            Browse articles organized by technology and expertise areas
           </Typography>
         </Box>
 

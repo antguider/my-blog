@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
+import { categories } from '../data/blogData';
 
 interface HeaderProps {
   onMenuToggle: () => void;
@@ -27,12 +28,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const location = useLocation();
 
-  const navigationItems = [
-    { label: 'Home', path: '/' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'About', path: '/about' },
-    { label: 'Contact', path: '/contact' },
-  ];
+  // Create category navigation items
+  const categoryItems = categories.map(category => ({
+    label: category.name,
+    path: `/blog?category=${category.slug}`,
+    slug: category.slug
+  }));
 
   const drawer = (
     <Box sx={{ width: 250 }}>
@@ -45,14 +46,14 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
         </IconButton>
       </Box>
       <List>
-        {navigationItems.map((item) => (
+        {categoryItems.map((item) => (
           <ListItem
             key={item.path}
             component={Link}
             to={item.path}
             onClick={onMenuToggle}
             sx={{
-              backgroundColor: location.pathname === item.path ? theme.palette.primary.light : 'transparent',
+              backgroundColor: location.search.includes(item.slug) ? theme.palette.primary.light : 'transparent',
               '&:hover': {
                 backgroundColor: theme.palette.primary.light,
               },
@@ -83,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
                 },
               }}
             >
-              Muthukumar Jayamurugan
+              TechBlog
             </Typography>
 
             {isMobile ? (
@@ -96,15 +97,16 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
                 <MenuIcon />
               </IconButton>
             ) : (
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                {navigationItems.map((item) => (
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                {categoryItems.map((item) => (
                   <Button
                     key={item.path}
                     component={Link}
                     to={item.path}
                     sx={{
-                      color: location.pathname === item.path ? 'primary.main' : 'text.primary',
-                      fontWeight: location.pathname === item.path ? 'bold' : 'normal',
+                      color: location.search.includes(item.slug) ? 'primary.main' : 'text.primary',
+                      fontWeight: location.search.includes(item.slug) ? 'bold' : 'normal',
+                      fontSize: '0.9rem',
                       '&:hover': {
                         backgroundColor: 'primary.light',
                         color: 'primary.dark',
