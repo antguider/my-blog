@@ -21,9 +21,11 @@ const Footer: React.FC = () => {
     <Box
       component="footer"
       sx={{
-        backgroundColor: 'grey.100',
+        backgroundColor: 'background.paper',
         py: 6,
         mt: 'auto',
+        borderTop: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <Container maxWidth="lg">

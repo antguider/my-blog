@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
 
   return (
     <>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white', color: 'text.primary' }}>
+      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'background.paper', color: 'text.primary' }}>
         <Container maxWidth="lg">
           <Toolbar sx={{ justifyContent: 'space-between' }}>
             <Typography

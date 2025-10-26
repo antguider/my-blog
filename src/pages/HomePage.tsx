@@ -241,7 +241,7 @@ const HomePage: React.FC = () => {
       </Container>
 
       {/* Stats Section */}
-      <Box sx={{ backgroundColor: 'grey.50', py: 8 }}>
+      <Box sx={{ backgroundColor: 'background.paper', py: 8, borderTop: '1px solid', borderColor: 'divider' }}>
         <Container maxWidth="lg">
           <Grid container spacing={4} textAlign="center">
             <Grid size={{ xs: 12, sm: 4 }}>

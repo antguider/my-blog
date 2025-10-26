@@ -236,17 +236,21 @@ const BlogPostPage: React.FC = () => {
             fontSize: '1.1rem',
           },
           '& pre': {
-            backgroundColor: theme.palette.grey[100],
+            backgroundColor: theme.palette.grey[800],
             padding: 2,
             borderRadius: 1,
             overflow: 'auto',
             mb: 2,
+            border: '1px solid',
+            borderColor: 'divider',
           },
           '& code': {
-            backgroundColor: theme.palette.grey[100],
+            backgroundColor: theme.palette.grey[800],
             padding: '2px 4px',
             borderRadius: '4px',
             fontSize: '0.9em',
+            border: '1px solid',
+            borderColor: 'divider',
           },
           '& ul, & ol': {
             mb: 2,
@@ -261,9 +265,11 @@ const BlogPostPage: React.FC = () => {
             paddingLeft: 2,
             margin: '2rem 0',
             fontStyle: 'italic',
-            backgroundColor: theme.palette.grey[50],
+            backgroundColor: theme.palette.grey[800],
             padding: 2,
             borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'divider',
           },
         }}
       >

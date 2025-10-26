@@ -223,7 +223,7 @@ const AboutPage: React.FC = () => {
       </Box>
 
       {/* Stats Section */}
-      <Box sx={{ backgroundColor: 'grey.50', py: 6, borderRadius: 2 }}>
+      <Box sx={{ backgroundColor: 'background.paper', py: 6, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
           Our Impact
         </Typography>
