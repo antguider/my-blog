@@ -24,7 +24,7 @@ import {
   LinkedIn,
 } from '@mui/icons-material';
 import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
-import { samplePosts, authors } from '../data/sampleData';
+import { blogPosts, authors } from '../data/blogData';
 import ReactMarkdown from 'react-markdown';
 
 const BlogPostPage: React.FC = () => {
@@ -32,9 +32,9 @@ const BlogPostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  const post = samplePosts.find(p => p.id === id);
+  const post = blogPosts.find(p => p.id === id);
   const author = authors.find(a => a.name === post?.author);
-  const relatedPosts = samplePosts
+  const relatedPosts = blogPosts
     .filter(p => p.id !== id && p.category === post?.category)
     .slice(0, 3);
 

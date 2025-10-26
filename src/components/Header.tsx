@@ -83,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, mobileOpen }) => {
                 },
               }}
             >
-              TechBlog
+              Muthukumar Jayamurugan
             </Typography>
 
             {isMobile ? (

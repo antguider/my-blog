@@ -15,11 +15,11 @@ import {
 } from '@mui/material';
 import { ArrowForward, AccessTime } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { samplePosts } from '../data/sampleData';
+import { blogPosts } from '../data/blogData';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
-  const featuredPosts = samplePosts.filter(post => post.featured);
+  const featuredPosts = blogPosts.filter(post => post.featured);
 
   return (
     <Box>
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
                   mb: 3,
                 }}
               >
-                Welcome to TechBlog
+                Muthukumar Jayamurugan
               </Typography>
               <Typography
                 variant="h5"
@@ -56,8 +56,8 @@ const HomePage: React.FC = () => {
                   lineHeight: 1.6,
                 }}
               >
-                Discover the latest insights in web development, React, and cutting-edge technologies.
-                Join our community of developers and stay ahead of the curve.
+                UI Lead with 12 years of extensive experience in leading the development and implementation 
+                of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
                     },
                   }}
                 >
-                  Explore Articles
+                  View My Work
                 </Button>
                 <Button
                   component={Link}
@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
                     },
                   }}
                 >
-                  Learn More
+                  Contact Me
                 </Button>
               </Box>
             </Grid>

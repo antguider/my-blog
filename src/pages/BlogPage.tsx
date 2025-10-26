@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { Search, AccessTime, ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { samplePosts, categories } from '../data/sampleData';
+import { blogPosts, categories } from '../data/blogData';
 
 const BlogPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,7 +30,7 @@ const BlogPage: React.FC = () => {
   const postsPerPage = 6;
 
   const filteredPosts = useMemo(() => {
-    return samplePosts.filter(post => {
+    return blogPosts.filter(post => {
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));

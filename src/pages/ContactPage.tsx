@@ -51,20 +51,20 @@ const ContactPage: React.FC = () => {
     {
       icon: <Email />,
       title: 'Email',
-      description: 'contact@techblog.com',
-      action: 'mailto:contact@techblog.com',
+      description: 'muthukumar.jayamurugan@gmail.com',
+      action: 'mailto:muthukumar.jayamurugan@gmail.com',
     },
     {
       icon: <Phone />,
       title: 'Phone',
-      description: '+1 (555) 123-4567',
-      action: 'tel:+15551234567',
+      description: '+91-9094534141',
+      action: 'tel:+919094534141',
     },
     {
       icon: <LocationOn />,
       title: 'Location',
-      description: 'San Francisco, CA',
-      action: null,
+      description: 'Bangalore, India',
+      action: 'https://maps.google.com/?q=Bangalore,India',
     },
   ];
 
@@ -76,8 +76,8 @@ const ContactPage: React.FC = () => {
           Get In Touch
         </Typography>
         <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 600, mx: 'auto' }}>
-          Have a question, suggestion, or want to collaborate? We'd love to hear from you. 
-          Send us a message and we'll respond as soon as possible.
+          Ready to discuss your next project or have questions about frontend architecture? 
+          I'd love to hear from you and explore how we can work together.
         </Typography>
       </Box>
 

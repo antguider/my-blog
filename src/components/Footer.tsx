@@ -32,16 +32,16 @@ const Footer: React.FC = () => {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              TechBlog
+              Muthukumar Jayamurugan
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              A modern blog showcasing the latest in web development, React, and cutting-edge technologies.
-              Built with React 18 and Material-UI for a professional portfolio experience.
+              UI Lead with 12 years of extensive experience in leading the development and implementation 
+              of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <IconButton
                 component={Link}
-                href="https://twitter.com"
+                href="https://twitter.com/devmuthu"
                 target="_blank"
                 rel="noopener noreferrer"
                 size="small"
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
               </IconButton>
               <IconButton
                 component={Link}
-                href="https://linkedin.com"
+                href="https://linkedin.com/in/muthukumar-jayamurugan"
                 target="_blank"
                 rel="noopener noreferrer"
                 size="small"
@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
               </IconButton>
               <IconButton
                 component={Link}
-                href="https://github.com"
+                href="https://github.com/devmuthu"
                 target="_blank"
                 rel="noopener noreferrer"
                 size="small"
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
               </IconButton>
               <IconButton
                 component={Link}
-                href="mailto:contact@techblog.com"
+                href="mailto:muthukumar.jayamurugan@gmail.com"
                 size="small"
                 sx={{ color: 'primary.main' }}
               >
@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © {currentYear} TechBlog. All rights reserved.
+            © {currentYear} Muthukumar Jayamurugan. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 3 }}>
             <Link href="/privacy" color="text.secondary" underline="hover" variant="body2">

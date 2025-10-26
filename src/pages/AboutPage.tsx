@@ -11,40 +11,44 @@ import {
   useTheme,
 } from '@mui/material';
 import { Code, Palette, Rocket, School } from '@mui/icons-material';
-import { authors } from '../data/sampleData';
+import { authors } from '../data/blogData';
 
 const AboutPage: React.FC = () => {
   const theme = useTheme();
 
   const skills = [
-    { name: 'React', level: 95 },
+    { name: 'React', level: 99 },
+    { name: 'Angular', level: 95 },
     { name: 'TypeScript', level: 90 },
-    { name: 'Next.js', level: 85 },
-    { name: 'Node.js', level: 80 },
-    { name: 'CSS/SCSS', level: 90 },
-    { name: 'Material-UI', level: 85 },
+    { name: 'JavaScript', level: 95 },
+    { name: 'Micro Frontends', level: 85 },
+    { name: 'NX Monorepo', level: 90 },
+    { name: 'AWS', level: 75 },
+    { name: 'Testing (Jest/Playwright)', level: 85 },
+    { name: 'CI/CD', level: 85 },
+    { name: 'Agile/Scrum', level: 90 },
   ];
 
   const values = [
     {
       icon: <Code />,
-      title: 'Clean Code',
-      description: 'Writing maintainable and scalable code that follows best practices and industry standards.',
+      title: 'Technical Leadership',
+      description: 'Leading teams of 5-10 developers with proven success in architecture design and technical strategy.',
     },
     {
       icon: <Palette />,
-      title: 'User Experience',
-      description: 'Creating intuitive and beautiful interfaces that provide exceptional user experiences.',
+      title: 'Frontend Architecture',
+      description: 'Designing scalable micro frontend architectures and implementing design systems for enterprise applications.',
     },
     {
       icon: <Rocket />,
-      title: 'Performance',
-      description: 'Building fast and efficient applications that deliver optimal performance across all devices.',
+      title: 'Performance Optimization',
+      description: 'Achieving 40%+ load time reduction through advanced optimization techniques and CI/CD pipeline improvements.',
     },
     {
       icon: <School />,
-      title: 'Continuous Learning',
-      description: 'Staying up-to-date with the latest technologies and sharing knowledge with the community.',
+      title: 'Agile Methodologies',
+      description: 'Scrum Master with expertise in velocity planning, sprint execution, and continuous improvement practices.',
     },
   ];
 
@@ -53,11 +57,11 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <Box sx={{ textAlign: 'center', mb: 8 }}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          About TechBlog
+          About Muthukumar Jayamurugan
         </Typography>
         <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 800, mx: 'auto' }}>
-          We're passionate developers dedicated to sharing knowledge, insights, and best practices 
-          in modern web development. Our mission is to help developers grow and build amazing applications.
+          UI Lead with 12 years of extensive experience in leading the development and implementation 
+          of high-performance web applications. Expertise in React, Angular, TypeScript, and Micro Frontend architecture.
         </Typography>
       </Box>
 
@@ -66,17 +70,17 @@ const AboutPage: React.FC = () => {
         <Grid container spacing={4} alignItems="center">
           <Grid size={{ xs: 12, md: 6 }}>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
-              Our Mission
+              Professional Summary
             </Typography>
             <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
-              At TechBlog, we believe that great software comes from great developers. Our mission is to 
-              provide high-quality content that helps developers at all levels improve their skills and 
-              stay current with the rapidly evolving world of web development.
+              Seasoned UI Lead with 12 years experience building scalable web applications. Expertise in React, 
+              Angular, TypeScript, and Micro Frontend architecture. Proven success leading teams (5-10 developers), 
+              optimizing performance (40%+ load time reduction), and implementing design systems.
             </Typography>
             <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
-              We focus on practical, real-world solutions that you can implement in your projects today. 
-              From beginner tutorials to advanced architectural patterns, we cover the full spectrum of 
-              modern web development.
+              Agile practitioner with strong leadership in CI/CD pipelines and frontend architecture. Currently serving 
+              as Member of Technical Staff at Aquera, leading Angular NX migration and component library development 
+              for enterprise applications.
             </Typography>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -102,7 +106,7 @@ const AboutPage: React.FC = () => {
       {/* Values Section */}
       <Box sx={{ mb: 8 }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
-          Our Values
+          Core Competencies
         </Typography>
         <Grid container spacing={3}>
           {values.map((value, index) => (
@@ -135,7 +139,7 @@ const AboutPage: React.FC = () => {
       {/* Skills Section */}
       <Box sx={{ mb: 8 }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
-          Technologies We Cover
+          Technical Skills
         </Typography>
         <Grid container spacing={2} justifyContent="center">
           {skills.map((skill) => (
@@ -158,7 +162,7 @@ const AboutPage: React.FC = () => {
       {/* Team Section */}
       <Box sx={{ mb: 8 }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
-          Meet Our Authors
+          Professional Experience
         </Typography>
         <Grid container spacing={4}>
           {authors.map((author) => (
@@ -225,31 +229,31 @@ const AboutPage: React.FC = () => {
       {/* Stats Section */}
       <Box sx={{ backgroundColor: 'background.paper', py: 6, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
-          Our Impact
+          Career Highlights
         </Typography>
         <Grid container spacing={4} textAlign="center">
             <Grid size={{ xs: 12, sm: 4 }}>
             <Typography variant="h3" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              50+
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              Articles Published
-            </Typography>
-          </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
-            <Typography variant="h3" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              10K+
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              Monthly Readers
-            </Typography>
-          </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
-            <Typography variant="h3" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              5
+              12+
             </Typography>
             <Typography variant="h6" color="text.secondary">
               Years Experience
+            </Typography>
+          </Grid>
+            <Grid size={{ xs: 12, sm: 4 }}>
+            <Typography variant="h3" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+              10+
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              Team Members Led
+            </Typography>
+          </Grid>
+            <Grid size={{ xs: 12, sm: 4 }}>
+            <Typography variant="h3" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+              40%+
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              Performance Improvement
             </Typography>
           </Grid>
         </Grid>

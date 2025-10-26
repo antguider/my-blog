@@ -28,8 +28,8 @@ src/
 │   ├── BlogPostPage.tsx # Individual blog post page
 │   ├── AboutPage.tsx   # About page
 │   └── ContactPage.tsx # Contact page
-├── data/               # Sample data and content
-│   └── sampleData.ts   # Blog posts, categories, authors
+├── data/               # Blog content and data
+│   └── blogData.ts     # Blog posts, categories, authors
 ├── types/              # TypeScript type definitions
 │   └── index.ts        # Interface definitions
 └── App.tsx             # Main app component with routing
@@ -129,7 +129,7 @@ const theme = createTheme({
 ```
 
 ### Adding New Blog Posts
-Add new posts to `src/data/sampleData.ts`:
+Add new posts to `src/data/blogData.ts`:
 
 ```typescript
 {
